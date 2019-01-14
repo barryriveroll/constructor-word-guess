@@ -7,36 +7,44 @@ var Word = function(letters) {
 
   this.newWord = function(word) {
     for (var i = 0; i < word.length; i++) {
-      this.letters.push(new Letter(word[i], false));
+      if (word[i] === " ") {
+        this.letters.push(new Letter(word[i], true));
+      } else {
+        this.letters.push(new Letter(word[i], false));
+      }
     }
   };
 
   this.displayCurrentWord = function() {
     var currentWord = "";
     letters.forEach(function(letter) {
-      var addValue = "";
-      if (letter.value === " ") {
-        addValue = " ";
-      } else {
-        addValue = letter.returnCharacter();
-      }
-      currentWord += addValue + " ";
+      currentWord += letter.returnCharacter() + " ";
     });
     return currentWord;
   };
 
+  this.checkComplete = function() {
+    var complete = true;
+    for (var i = 0; i < letters.length; i++) {
+      if (!letters[i].guessed) {
+        complete = false;
+      }
+    }
+    return complete;
+  };
+
   this.guessLetter = function(guess) {
     var correct = 0;
-    if (!this.guesses.includes(guess)) {
-      this.guesses += guess + " ";
-    }
     for (var i = 0; i < letters.length; i++) {
       if (letters[i].isGuessed(guess)) {
         correct++;
       }
     }
-    if (!correct) {
+    if (!correct && !this.guesses.includes(guess)) {
       this.guessesRemaining--;
+    }
+    if (!this.guesses.includes(guess)) {
+      this.guesses += guess + " ";
     }
   };
 };
