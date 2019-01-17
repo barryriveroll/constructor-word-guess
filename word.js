@@ -40,11 +40,28 @@ var Word = function(letters) {
         correct++;
       }
     }
-    if (!correct && !this.guesses.includes(guess)) {
-      this.guessesRemaining--;
-    }
-    if (!this.guesses.includes(guess)) {
-      this.guesses += guess + " ";
+
+    if (!this.guesses.includes(guess.toLowerCase())) {
+      this.guesses += guess.toLowerCase() + " ";
+
+      if (!correct) {
+        console.log(
+          "\x1b[31m%s\x1b[0m",
+          "\n----------------\n   INCORRECT!\n----------------"
+        );
+
+        this.guessesRemaining--;
+      } else {
+        console.log(
+          "\x1b[32m%s\x1b[0m",
+          "\n----------------\n    CORRECT!\n----------------"
+        );
+      }
+    } else {
+      console.log(
+        "\x1b[36m%s\x1b[0m",
+        "\n----------------\nAlready guessed!\n----------------"
+      );
     }
   };
 };
